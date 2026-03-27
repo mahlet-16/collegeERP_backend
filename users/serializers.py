@@ -6,7 +6,7 @@ from .models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "first_name", "last_name", "email", "role", "phone"]
+        fields = ["id", "username", "first_name", "last_name", "email", "role", "phone", "is_active"]
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -22,3 +22,9 @@ class UserCreateSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class UserManageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "first_name", "last_name", "email", "role", "phone", "is_active"]

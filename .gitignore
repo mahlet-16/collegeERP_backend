@@ -3,5 +3,3 @@ __pycache__/
 *.pyc
 .env
 db.sqlite3
-collegeerp_pdf_extracted.txt
-extract_pdf.py
