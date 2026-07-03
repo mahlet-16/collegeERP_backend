@@ -21,6 +21,7 @@ class Attendance(models.Model):
 	date = models.DateField()
 	status = models.CharField(max_length=10, choices=Status.choices)
 	comment = models.CharField(max_length=255, blank=True)
+	is_draft = models.BooleanField(default=False)
 	recorded_by = models.ForeignKey(
 		User,
 		on_delete=models.SET_NULL,

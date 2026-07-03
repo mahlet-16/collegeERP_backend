@@ -16,6 +16,7 @@ class Result(models.Model):
 	grade = models.CharField(max_length=5)
 	gpa = models.DecimalField(max_digits=3, decimal_places=2)
 	term = models.CharField(max_length=50)
+	is_draft = models.BooleanField(default=False)
 	entered_by = models.ForeignKey(
 		User,
 		on_delete=models.SET_NULL,

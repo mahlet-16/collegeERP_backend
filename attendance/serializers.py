@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from courses.models import Enrollment
 from .models import Attendance
 
 
@@ -18,6 +19,20 @@ class AttendanceSerializer(serializers.ModelSerializer):
             "date",
             "status",
             "comment",
+            "is_draft",
             "recorded_by",
         ]
         read_only_fields = ["recorded_by"]
+
+    def validate(self, attrs):
+        student = attrs.get("student", getattr(self.instance, "student", None))
+        course = attrs.get("course", getattr(self.instance, "course", None))
+        if student and student.role != "student":
+            raise serializers.ValidationError({"student": "Attendance user must be a student."})
+        if student and course and not Enrollment.objects.filter(student=student, course=course).exists():
+            raise serializers.ValidationError("Student is not enrolled in this course.")
+
+        request = self.context.get("request")
+        if request and request.user.role == "teacher" and course and course.teacher_id != request.user.id:
+            raise serializers.ValidationError("You can only record attendance for your assigned courses.")
+        return attrs

@@ -1,0 +1,1494 @@
+ 
+CPU Business and Information Technology College 
+Department of Computer Science 
+ 
+ 
+Web Based College ERP 
+  
+  
+1. MAHLET AMENU                     ECS/1557/15 
+2. HIWOT ASSEFA                        RCS/1370/15 
+3. SELAMAWIT TOFIK                    RCS/1271/15 
+4. ATSEDE MENGISTU             ECS/1434/15 
+5. DAWIT TESFAYE              RCS/017/14  
+                                                                                                                                                             
+                 
+ 
+ 
+ 
+ 
+        Advisor: Mr Arega 
+                                                                                                      February 2025 
+Table of Contents 
+ACKNOWLEDGEMENTS ................................................................................................................................................ 7 
+Abstract ................................................................................................................................................................................. 8 
+CHAPTER ONE – INTRODUCTION ..................................................................................................................... 9 
+1.1 Background Information ..................................................................................................................................... 9 
+1.2 Statement of the Problem ................................................................................................................................... 9 
+1.3 Objectives .............................................................................................................................................................. 10 
+1.3.1 General Objective ...................................................................................................................................... 10 
+1.3.2 Specific Objectives ................................................................................................................................... 10 
+1.4 Scope of the Project ........................................................................................................................................... 10 
+1.4.1 Out of Scope ................................................................................................................................................ 10 
+1.5 Tools and Methodologies ................................................................................................................................ 10 
+1.5.1 Data Collection Methodologies ........................................................................................................... 10 
+1.5.2 System Development Methodology ................................................................................................... 11 
+1.5.3 Development Tools ................................................................................................................................... 11 
+1.6 Beneficiaries ......................................................................................................................................................... 11 
+1.7 Schedule (Gantt Chart Representation) ..................................................................................................... 12 
+CHAPTER TWO - REQUIREMENT ANALYSIS .......................................................................................... 13 
+2.1 Introduction ........................................................................................................................................................... 13 
+2.2 Current System Overview ............................................................................................................................... 13 
+2.3 Proposed System Overview............................................................................................................................ 13 
+2.3.1 Functional Requirements ........................................................................................................................ 13 
+2.3.2 Non-Functional Requirements ............................................................................................................. 18 
+2.4 System Models - Requirement Determination ....................................................................................... 19 
+2.4.1 Essential Use Case Modeling ............................................................................................................... 19 
+2.4.2 Essential UI Prototype ............................................................................................................................. 31 
+2.4.3 User Interface Flow Diagram ............................................................................................................... 34 
+2.4.4 Supplementary Specifications .............................................................................................................. 36 
+2.4.4.2 Constraints ................................................................................................................................................ 39 
+2.5 System Models - Analysis............................................................................................................................... 42 
+2.5.1 System Use Case Modeling ................................................................................................................... 42 
+2.5.1.1 Use Case Diagram ................................................................................................................................. 42 
+2.5.2 Sequence Diagrams ................................................................................................................................... 56 
+2.5.3 Activity Diagrams ..................................................................................................................................... 61 
+CHAPTER THREE - SYSTEM DESIGN ............................................................................................................ 66 
+3.1 Introduction ........................................................................................................................................................... 66 
+3.2 Design Goal........................................................................................................................................................... 66 
+3.3 Design Tradeoffs ................................................................................................................................................. 66 
+3.4 Subsystem Decomposition .............................................................................................................................. 67 
+3.5 Hardware/Software Mapping ......................................................................................................................... 67 
+3.6 Access Control and Security .......................................................................................................................... 67 
+3.7 Design Phase Models ........................................................................................................................................ 68 
+3.7.1 Class Modeling ........................................................................................................................................... 68 
+3.7.2 Persistent Model ......................................................................................................................................... 69 
+3.7.2.1 Mapping Class Diagram to Relation .............................................................................................. 69 
+3.7.3 User Interface Design............................................................................................................................... 70 
+3.7.4 Deployment Diagram ............................................................................................................................... 70 
+3.7.5 Network Design .......................................................................................................................................... 71 
+REFERENCES ................................................................................................................................................................... 73 
+ACRONYMS ....................................................................................................................................................................... 74 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+List of Tables 
+Table 2.1: Use Case-Login (Student) .............................................................................. 21 
+Table 2.2: Use Case-View Attendance ........................................................................... 21 
+Table 2.3: Use Case-View Result ................................................................................... 22 
+Table 2.4: Use Case-View Timetable ............................................................................. 23 
+Table 2.5: Use Case-Login (Teacher) ............................................................................. 23 
+Table 2.6: Use Case-Record Attendance......................................................................... 24 
+Table 2.7: Use Case-Enter Result ................................................................................... 25 
+Table 2.8: Use Case View Timetable (Teacher) .............................................................. 25 
+Table 2.9: Use Case Login (Registrar) ............................................................................ 26 
+Table 2.10: Use Case Register Student ........................................................................... 27 
+Table 2.11: Use Case Register Teacher .......................................................................... 28 
+Table 2.12: Use Case Manage Timetable ........................................................................ 28 
+Table 2.13: Use Case Login (Admin) ............................................................................. 29 
+Table 2.14: Use Case Manage User Roles ...................................................................... 30 
+Table 2.15: Use Case Monitor System ............................................................................ 31 
+Table 2.16: UI Element Specification ............................................................................. 33 
+Table 2.17: Business Rules ............................................................................................ 37 
+Table 2.18: Constraints .................................................................................................. 39 
+Table 2.19: Change Case ............................................................................................... 41 
+Table 3.1: Hardware/Software Mapping ......................................................................... 67 
+Table 3.2: Access Control and Security .......................................................................... 68 
+ 
+ 
+List Of Figure 
+Figure 1.1: Gantt Chart .................................................................................................. 12 
+Figure 2.1: Essential Use Case Diagram ......................................................................... 20 
+Figure 2.2: Login Interface Prototype ............................................................................. 32 
+Figure 2.3: Student Dashboard Prototype ....................................................................... 32 
+Figure 2.4: Teacher Dashboard Prototype ....................................................................... 32 
+Figure 2.5: Registrar Dashboard Prototype ..................................................................... 33 
+Figure 2.6: Administrator Dashboard Prototype .............................................................. 33 
+Figure 2.7: Student UI Flow Diagram ............................................................................ 35 
+Figure 2.8: Teacher UI Flow Diagram ............................................................................ 35 
+Figure 2.9: Administrator UI Flow Diagram ................................................................... 36 
+Figure 2.10: Registrar UI Flow Diagram ........................................................................ 36 
+Figure 2.11: System Use Case Diagram ......................................................................... 43 
+Figure 2.12: Login Sequence Diagram ........................................................................... 56 
+Figure 2.13: Logout Sequence Diagram ......................................................................... 57 
+Figure 2.14: Timetable Management Sequence Diagram ................................................ 57 
+Figure 2.15: Admin Role Management Sequence Diagram ............................................. 58 
+Figure 2.16: Teacher Attendance Management Sequence Diagram ................................. 59 
+Figure 2.17: Registrar Register Student Sequence Diagram ............................................ 60 
+Figure 2.18: Registrar Register Teacher Sequence Diagram ............................................ 60 
+Figure 2.19: Student View Attendance Sequence Diagram ............................................. 61 
+Figure 2.20: Student Activity Diagram ........................................................................... 62 
+Figure 2.21: Teacher Activity Diagram .......................................................................... 63 
+Figure 2.22: Registrar Activity Diagram......................................................................... 64 
+Figure 2.23: Administrator Activity Diagram ................................................................. 65 
+Figure 3.1: Class Diagram ............................................................................................. 69 
+Figure 2.22: Deployment Diagram ................................................................................. 71 
+Figure 3.1: Network Design ........................................................................................... 72 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ACKNOWLEDGEMENTS 
+We want to thank Mr. Arega, our project advisor, for his support, guidance, and honest feedback 
+while we worked on this proposal, and continuous encouragement throughout the development of 
+this proposal. His expertise and patience have been instrumental in shaping our ideas and refining 
+the project’s scope.  
+We appreciate the support of our families and friends, whose understanding and motivation kept 
+us focused and determined. Their belief in our abilities gave us the confidence to complete this 
+work. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Abstract 
+The College ERP system is a web-based platform designed to streamline academic and 
+administrative operations at CPU Business and Information Technology College. By centralizing 
+student information, attendance tracking, result processing, timetable management, and user 
+administration, the system replaces manual, paper-based processes with an automated, secure, 
+and efficient digital environment. Students gain real-time access to their attendance, grades, and 
+class schedules, while teachers can effortlessly record attendance and submit results. Registrars 
+benefit from simplified registration and timetable creation, and administrators maintain oversight 
+through role management and system monitoring.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+CHAPTER ONE – INTRODUCTION 
+ 
+  1.1 Background Information 
+ 
+  In today’s modern world, information technology has become an essential tool in nearly every 
+sector including education, health, banking, communication, and business. The use of 
+computerized systems has replaced traditional manual processes in order to improve efficiency, 
+accuracy, reliability, and security of data. Educational institutions are shifting towards digital 
+management systems to handle the growing number of students, staff, and academic activities. 
+ 
+  CPU Business and Information Technology College, like many other higher learning 
+institutions, handles a large volume of academic and administrative information daily. This 
+includes student registration, staff records, attendance tracking, result management, timetable 
+preparation, and report generation. Currently, most of these activities are either done manually or 
+using separate files and standalone applications. 
+ 
+  Manual systems suffer from problems such as slow processing speed, high possibility of human 
+error, data redundancy, lack of proper record security, difficulty in retrieving old records, and 
+delayed decision-making. These limitations negatively affect the overall performance of the 
+institution. To overcome these challenges, this project proposes the development of a web-based 
+College ERP System for CPU Business and Information Technology College. This system will 
+serve as a centralized platform for managing academic and administrative operations efficiently 
+and securely. 
+ 
+1.2 Statement of the Problem 
+ 
+  The current academic and administrative systems at CPU College face significant systemic 
+challenges due to their reliance on manual and semi-computerized processes. These traditional 
+systems inherently suffer from critical drawbacks, including slow processing speeds, a high 
+possibility of human error, data redundancy, lack of proper record security, difficulty in retrieving 
+historical data, and consequential delays in institutional decision-making. Major operational 
+problems identified include the difficulty associated with managing large volumes of student and 
+employee data, frequent errors in calculating both attendance and examination results, and the 
+costly duplication of student records. These operational inefficiencies often lead to substantial 
+delays in generating essential academic reports, poor communication pathways between students 
+and teachers, and limited access to real-time academic information required for timely 
+intervention. Furthermore, the risk of data loss due to poor storage systems and the unnecessarily 
+time-consuming nature of administrative work collectively reduce efficiency, increase workload, 
+and negatively impact on the overall quality of service delivery within the college. Therefore, 
+there is a strong and demonstrable need for a modern, centralized, secure, and automated ERP 
+system that can directly solve these pervasive operational issues and significantly improve overall 
+institutional performance. 
+ 
+1.3 Objectives 
+1.3.1 General Objective 
+ 
+  The general objective of this project is to design and develop a web-based College ERP System 
+for CPU Business and Information Technology College. 
+1.3.2 Specific Objectives 
+  The specific objectives of this project are strategically focused on delivering core system 
+functionalities and ensuring technical robustness related to data integrity and system 
+requirements. 
+Requirement Fulfillment: The project aims to deliver a fully computerized student information 
+management system and completely automate attendance recording/monitoring and examination 
+result processing, thereby minimizing human calculation errors. Furthermore, the system must 
+reduce reliance on paperwork and manual record keeping, and it must automatically generate 
+essential academic reports. 
+Security and Database Integrity: A fundamental objective is to provide secure login access 
+tailored specifically for students, teachers, and administrators to ensure appropriate data access 
+control. By implementing these functionalities, the system will substantially improve data 
+accuracy and reliability, ensuring the integrity of the underlying database architecture. Finally, 
+the resulting platform must improve communication efficiency between students and teachers and 
+provide real-time access to critical academic information for all stakeholders. 
+ 
+1.4 Scope of the Project 
+ 
+  The scope of this project is limited to the academic and administrative activities of CPU 
+Business and Information Technology College. The system focuses on student registration and 
+profile management, teacher profile management, attendance management, marks and result 
+processing, timetable management, and administrator control with system monitoring. These 
+functionalities are designed to improve data accuracy, reduce manual workload, and enhance 
+overall institutional efficiency. 
+1.4.1 Out of Scope 
+ 
+  The following features are not included in the current version of the system. These components 
+are excluded due to time, cost, and technical constraints, but may be considered in future 
+enhancements: 
+ 
+  • Online fee payment system 
+  • Biometric-based attendance system and library management 
+1.5 Tools and Methodologies 
+  1.5.1 Data Collection Methodologies 
+ 
+  System requirements were meticulously gathered using several rigorous methodologies. 
+Interviews were conducted extensively with key stakeholders, including students, teachers, and 
+administrative staff, to elicit comprehensive system requirements. Observation techniques were 
+simultaneously utilized to gain practical, real-world insight into how current academic processes 
+are executed, particularly those procedures still relying on manual effort. Furthermore, detailed 
+documentary analysis was performed on existing institutional forms, reports, and current student 
+records to understand data flow and structure, supplemented by targeted internet research 
+conducted to analyze similar existing ERP systems for comparative best practices. 
+ 
+1.5.2 System Development Methodology 
+ 
+  The Waterfall Development Model was rigorously selected as the guiding system development 
+methodology for this project. This choice was necessitated by the finding that the project 
+requirements were clearly and thoroughly defined and documented during the initial analysis 
+phase. This structured approach mandates sequential progression through distinct, systematic 
+phases: Requirement Analysis, System Design, Implementation, Testing, Deployment, and 
+Maintenance. Verification must occur at the end of each phase before development progresses to 
+the next, thereby guaranteeing a controlled and systematic development process. 
+ 
+1.5.3 Development Tools 
+ 
+  The system implementation will rely on a robust, modern technological stack to ensure 
+performance and scalability. The development will utilize the following specifications: Frontend 
+Technologies will rely on standards including HTML, CSS, and Bootstrap. The core logic and 
+data processing on the Backend will be driven by Python, specifically using the highly scalable 
+and reliable Django Framework. Data persistence and management will employ a relational 
+Database solution, utilizing either MySQL or SQLite. Development will take place within the 
+Visual Studio Code environment, with all code changes meticulously managed using Git and 
+GitHub for comprehensive Version Control while operating on the Windows 11 operating 
+system. 
+ 
+1.6 Beneficiaries 
+ 
+  The successful implementation of this centralized web-based ERP system will provide 
+substantial benefits to various stakeholders within CPU Business and Information Technology 
+College: 
+ Students: Will gain real-time access to attendance records and examination results, 
+facilitating quicker communication with the college and improving their ability to track 
+academic progress. 
+ Teachers: Will achieve operational efficiency through automated mark and attendance 
+entry, benefiting from instant report generation and a significant reduction in manual 
+administrative workloads. 
+ Registrars: Will benefit from the automation of student registration and academic record 
+management, eliminating manual bottlenecks, reducing data redundancy, and ensuring 
+the accuracy of institutional data. 
+ Administrators: Will gain enhanced centralized oversight and robust security protocols, 
+allowing for the streamlined management of users and courses alongside rapid, system-
+wide report generation. 
+ College Management: Will have access to accurate, timely academic performance 
+analytics, supporting evidence-based decision-making and contributing to the overall 
+improvement of institutional efficiency. 
+1.7 Schedule (Gantt Chart Representation) 
+ 
+  The project development timeline is planned as follows: 
+ 
+Figure 1.1 Gantt Chart 
+CHAPTER TWO - REQUIREMENT ANALYSIS 
+2.1 Introduction 
+In this chapter, we will discuss the requirement analysis of the Web-Based College ERP System 
+designed for CPU Business and Information Technology College. This system seeks to automate 
+academic and administrative activities, including registration, attendance, and result management. 
+This section includes an overview of the existing system, the proposed system, and its specific 
+functional and non-functional requirements. Several models and diagrams are used to explain the 
+functionality and design of the system, specifically focusing on four user roles: Student, Teacher, 
+Registrar, and Administrator. 
+2.2 Current System Overview 
+The current administrative system at CPU Business and Information Technology College relies 
+heavily on manual, paper-based processes and isolated spreadsheets. This fragmented approach 
+faces several challenges, including significant data redundancy, frequent human errors in result 
+compilation, and inefficient communication between departments. These issues result in delayed 
+information dissemination to students, increased administrative workloads for teachers, and a lack 
+of data security, making the overall institutional management inefficient and prone to errors. 
+2.3 Proposed System Overview 
+The proposed system is a web-based College ERP System designed to automate and integrate the 
+academic and administrative operations of CPU Business and Information Technology College. 
+The system will provide a centralized platform where all authorized users can access and manage 
+information in real time based on their specific roles: Students, Teachers, Registrars, and 
+Administrators. 
+The proposed system aims to eliminate manual record keeping by introducing computerized 
+processes for student and teacher registration, attendance management, result processing, and 
+timetable management. Secure authentication mechanisms will ensure that only authorized users 
+can access system resources. The system will also support comprehensive report generation, 
+enabling administrators and registrars to make informed decisions based on accurate and up-to-
+date data. 
+By adopting modern web technologies and a structured database system, the proposed ERP 
+system will improve efficiency, accuracy, data security, and communication across the institution 
+through four distinct but integrated user roles. 
+2.3.1 Functional Requirements 
+Functional requirements describe the specific services and operations that the system must 
+perform. The major functional requirements of the proposed system include: 
+For Students: 
+1. Student Registration and Profile Management 
+o Function: To allow students to register and manage their profiles 
+o Description: Students can create accounts, update personal information, and view 
+their academic status 
+o Operations: 
+ Register new student account 
+ Update personal information 
+ View academic profile 
+2. Attendance Tracking 
+o Function: To enable students to view their attendance records 
+o Description: Students can check attendance status for all registered courses 
+o Operations: 
+ View daily/weekly attendance 
+ Check attendance percentage 
+ Receive attendance alerts 
+3. Result Viewing 
+o Function: To allow students to access examination results 
+o Description: Students can view grades and examination results 
+o Operations: 
+ View semester results 
+ Check grade reports 
+ Download result slips 
+4. Timetable Access 
+o Function: To provide students with class schedules 
+o Description: Students can access their daily/weekly timetable 
+o Operations: 
+ View class schedule 
+ Check room assignments 
+ Receive schedule updates 
+For Teachers: 
+1. Teacher Authentication and Profile Management 
+o Function: To allow teachers to securely access and manage their profiles 
+o Description: Teachers can login and update their professional information 
+o Operations: 
+ Login with credentials 
+ Update teaching profile 
+ View assigned courses 
+2. Attendance Management 
+o Function: To enable teachers to record and manage student attendance 
+o Description: Teachers can mark attendance for their classes 
+o Operations: 
+ Take daily attendance 
+ View attendance records 
+ Generate attendance reports 
+3. Result Management 
+o Function: To allow teachers to enter and manage student grades 
+o Description: Teachers can input examination marks and calculate grades 
+o Operations: 
+ Enter student marks 
+ Calculate final grades 
+ Publish results 
+4. Course Management 
+o Function: To enable teachers to manage assigned courses 
+o Description: Teachers can access course materials and student lists 
+o Operations: 
+ View assigned courses 
+ Upload course materials 
+ View student enrollment 
+For Registrars: 
+1. Academic Registration Management 
+o Function: To manage all academic registrations 
+o Description: Registrars can register new students and teachers 
+o Operations: 
+ Register new students 
+ Register new teachers 
+ Manage student and teacher profiles 
+2. Course and Curriculum Management 
+o Function: To manage courses and curriculum 
+o Description: Registrars can create and manage courses, assign credits 
+o Operations: 
+ Create new courses 
+ Assign course codes and credits 
+ Update curriculum 
+3. Timetable and Scheduling Management 
+o Function: To create and manage academic schedules 
+o Description: Registrars can create timetables and assign classrooms 
+o Operations: 
+ Create semester timetables 
+ Assign teachers to courses 
+ Allocate classrooms 
+ Resolve scheduling conflicts 
+4. Examination Management 
+o Function: To manage examination processes 
+o Description: Registrars can schedule exams, assign invigilators 
+o Operations: 
+ Schedule examinations 
+ Assign examination halls 
+ Appoint invigilators 
+ Process final results 
+5. Academic Record Management 
+o Function: To maintain academic records 
+o Description: Registrars can manage transcripts, certificates 
+o Operations: 
+ Generate transcripts 
+ Issue certificates 
+ Maintain academic history 
+For Administrators: 
+1. System Configuration and Management 
+o Function: To configure and manage system settings 
+o Description: Administrators can set system parameters and configurations 
+o Operations: 
+ Configure system settings 
+ Manage academic terms 
+ Set grading systems 
+ Configure notification settings 
+2. User Role and Permission Management 
+o Function: To manage user roles and permissions 
+o Description: Administrators can assign roles and set permissions 
+o Operations: 
+ Create user roles 
+ Assign permissions 
+ Manage access levels 
+3. System Monitoring and Security 
+o Function: To monitor system usage and security 
+o Description: Administrators can track system activities 
+o Operations: 
+ View system logs 
+ Monitor user activities 
+ Manage security settings 
+ Handle security incidents 
+4. Backup and Recovery Management 
+o Function: To manage data backup and recovery 
+o Description: Administrators can schedule and manage backups 
+o Operations: 
+ Schedule data backups 
+ Perform system recovery 
+ Test backup integrity 
+ 
+ 
+2.3.2 Non-Functional Requirements 
+Non-functional requirements define the quality attributes and operational constraints of the 
+system. These requirements ensure the system performs reliably and efficiently. 
+Security: The system shall provide secure login authentication using usernames and passwords. 
+Role-based access control shall prevent unauthorized access to sensitive data. 
+Performance: The system shall respond to user requests within an acceptable time frame under 
+normal operating conditions. It shall efficiently handle multiple users accessing the system 
+simultaneously. 
+Usability: The system shall have a user-friendly interface that is easy to navigate for users with 
+basic computer knowledge. Clear menus and instructions shall be provided. 
+Reliability: The system shall operate consistently without frequent failures. Data shall be 
+protected against loss through proper database management and backup mechanisms. 
+Scalability: The system shall be designed to support future expansion, such as adding new 
+modules or increasing the number of users without significant performance degradation. 
+Maintainability: The system shall be easy to maintain and update. Code documentation and 
+modular design shall allow developers to modify or enhance the system efficiently. 
+ 
+2.4 System Models - Requirement Determination 
+2.4.1 Essential Use Case Modeling  
+2.4.1.1 Use Case Diagram 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+College ERP System 
+ 
+Figure 2.1: Essential Use Case Diagram 
+Actors: 
+1. Student – Represents learners who log into the system to view their attendance records, 
+exam results, and class timetables. 
+2. Teacher – Responsible for recording student attendance, entering results, viewing 
+timetables, and accessing the system for academic-related tasks. 
+3. Registrar – Manages student and teacher registration, creates and manages timetables, 
+and supports academic record administration. 
+4. Admin – Oversees the entire system by managing user roles, monitoring system 
+activities, and ensuring system security and proper operation. 
+2.4.1.2 Use Case Documentation 
+Each use case will be documented to provide a detailed description of the interaction. This 
+documentation will include: 
+Student Use Cases 
+Table 2.1: Use Case – Login 
+Field Description 
+Use Case Name Login 
+Use Case ID UC-01 
+Actor Student 
+Preconditions Student must be registered in the system by Registrar 
+1. Student opens login page 
+2. Enters student ID and password 
+Basic Flow 
+3. System validates credentials 
+4. Student dashboard is displayed 
+Alternative Flows Invalid credentials → system displays error message 
+Post Conditions Student successfully logged in 
+ 
+Table 2.2: Use Case – View Attendance 
+Field Description 
+Use Case Name View Attendance 
+Use Case ID UC-02 
+Actor Student 
+Field Description 
+Preconditions Student logged in and enrolled in courses 
+1. Student navigates to attendance section 
+Basic Flow 2. System retrieves attendance data 
+3. Attendance records are displayed 
+Alternative Flows No records available → system displays appropriate message 
+Post Conditions Attendance information viewed 
+ 
+Table 2.3: Use Case – View Result 
+Field Description 
+Use Case Name View Result 
+Use Case ID UC-03 
+Actor Student 
+Preconditions Student logged in, results published 
+1. Student selects results option 
+Basic Flow 
+2. System displays grades 
+Alternative Flows Results not yet published → system displays pending message 
+Post Conditions Results viewed 
+ 
+ 
+ 
+Table 2.4: Use Case – View Timetable 
+Field Description 
+Use Case Name View Timetable 
+Use Case ID UC-04 
+Actor Student 
+Preconditions Student logged in 
+1. Student selects timetable option 
+Basic Flow 
+2. System displays class schedule 
+Alternative Flows Timetable not yet published → system displays appropriate message 
+Post Conditions Timetable viewed 
+ 
+Teacher Use Cases 
+Table 2.5: Use Case – Login 
+Field Description 
+Use Case Name Login 
+Use Case ID UC-06 
+Actor Teacher 
+Field Description 
+Preconditions Teacher account exists (registered by Registrar) 
+1. Teacher opens login page 
+2. Enters teacher ID and password 
+Basic Flow 
+3. System authenticates credentials 
+4. Teacher dashboard is displayed 
+Alternative Flows Invalid credentials → system displays error message 
+Post Conditions Teacher logged in 
+ 
+Table 2.6: Use Case – Record Attendance 
+Field Description 
+Use Case Name Record Attendance 
+Use Case ID UC-07 
+Actor Teacher 
+Preconditions Teacher logged in, class scheduled by Registrar 
+1. Teacher selects class from dashboard 
+2. System loads student list 
+Basic Flow 
+3. Teacher marks attendance (Present/Absent/Late/Excused) 
+4. System saves attendance data 
+Alternative Flows Partial save allowed → teacher can complete later 
+Field Description 
+Post Conditions Attendance recorded in system 
+ 
+Table 2.7: Use Case – Enter Result 
+Field Description 
+Use Case Name Enter Result 
+Use Case ID UC-08 
+Actor Teacher 
+Preconditions Teacher logged in, course assigned 
+1. Teacher selects course 
+2. System displays grading form 
+Basic Flow 
+3. Teacher enters grades 
+4. System validates and saves results 
+Alternative Flows Grade validation error → system highlights and prompts correction 
+Post Conditions Results entered 
+ 
+Table 2.8: Use Case – View Timetable 
+Field Description 
+Use Case Name View Timetable 
+Field Description 
+Use Case ID UC-09 
+Actor Teacher 
+Preconditions Teacher logged in, timetable published 
+1. Teacher selects timetable option 
+Basic Flow 
+2. System displays teaching schedule 
+Alternative Flows No timetable available → system displays appropriate message 
+Post Conditions Timetable viewed 
+ 
+Registrar Use Cases 
+Table 2.9: Use Case – Login 
+Field Description 
+Use Case Name Login 
+Use Case ID UC-11 
+Actor Registrar 
+Preconditions Registrar account exists (created by Admin) 
+Basic Flow 1. Registrar opens login page 
+2. Enters credentials 
+Field Description 
+3. System verifies registrar privileges 
+4. Registrar dashboard is displayed 
+Alternative Flows Invalid credentials → system displays error message 
+Post Conditions Registrar logged in 
+ 
+Table 2.10: Use Case – Register Student 
+Field Description 
+Use Case Name Register Student 
+Use Case ID UC-12 
+Actor Registrar 
+Preconditions Registrar logged in 
+1. Registrar navigates to student registration 
+2. Enters student details 
+Basic Flow 3. System validates information 
+4. System creates student account 
+5. System generates unique student ID 
+Alternative Flows Duplicate entry → system prevents creation and alerts registrar 
+Post Conditions New student registered in system 
+ 
+ 
+Table 2.11: Use Case – Register Teacher 
+Field Description 
+Use Case Name Register Teacher 
+Use Case ID UC-13 
+Actor Registrar 
+Preconditions Registrar logged in 
+1. Registrar navigates to teacher registration 
+2. Enters teacher details 
+Basic Flow 3. System validates information 
+4. System creates teacher account 
+5. System generates unique teacher ID 
+Alternative Flows Duplicate entry → system prevents creation and alerts registrar 
+Post Conditions New teacher registered in system 
+ 
+Table 2.12: Use Case – Manage Timetable 
+Field Description 
+Use Case Name Manage Timetable 
+Use Case ID UC-14 
+Actor Registrar 
+Field Description 
+Preconditions Registrar logged in, courses and teachers registered 
+1. Registrar selects academic term 
+2. Creates or updates timetable entries 
+Basic Flow 3. Assigns courses to teachers and rooms 
+4. System checks for scheduling conflicts 
+5. Registrar publishes timetable 
+Alternative Flows Conflict detected → system alerts registrar to resolve 
+Post Conditions Timetable created/updated and published 
+ 
+Administrator Use Cases 
+Table 2.13: Use Case – Login 
+Field Description 
+Use Case Name Login 
+Use Case ID UC-16 
+Actor Admin 
+Preconditions Admin account exists 
+1. Admin opens login page 
+2. Enters credentials 
+Basic Flow 
+3. System verifies admin privileges 
+4. Admin dashboard is displayed 
+Field Description 
+Alternative Flows Invalid credentials → system displays error message 
+Post Conditions Admin logged in 
+ 
+Table 2.14: Use Case – Manage User Roles 
+Field Description 
+Use Case Name Manage User Roles 
+Use Case ID UC-17 
+Actor Admin 
+Preconditions Admin logged in 
+1. Admin navigates to role management 
+2. Views existing roles and permissions 
+3. Creates/modifies roles 
+Basic Flow 
+4. Assigns permissions to roles 
+5. Assigns users to roles 
+6. Saves changes 
+Alternative Flows Role conflict (orphaned users) → system requires reassignment 
+Post Conditions User roles and permissions updated 
+ 
+ 
+ 
+Table 2.15: Use Case – Monitor System 
+Field Description 
+Use Case Name Monitor System 
+Use Case ID UC-18 
+Actor Admin 
+Preconditions Admin logged in 
+1. Admin navigates to system monitoring dashboard 
+2. Views system logs and performance metrics 
+Basic Flow 
+3. Can filter logs by user, action, date, severity 
+4. Receives alerts for critical issues 
+Alternative Flows – 
+Post Conditions System status monitored 
+  
+2.4.2 Essential UI Prototype 
+An essential UI prototype represents a simplified, technology-independent model of the system’s 
+user interface. Its purpose is to illustrate the basic interaction between users and the system 
+without focusing on design details such as colors, fonts, or layouts. This helps stakeholders 
+understand how users will interact with the system at an early stage of development. 
+ 
+ 
+Figure 2.2: Login Interface Prototype
+ 
+Figure 2.3: Student Dashboard Prototype  
+Figure 2.4: Teacher Dashboard Prototype
+  
+Figure 2.5: Registrar Dashboard Prototype  
+  
+Figure 2.6: Administrator Dashboard Prototype 
+  
+Table 2.16: UI Element Specifications by Role 
+Role UI Element Description Associated 
+Use Cases 
+Student Student Course overview, attendance, UC01, UC02 
+Dashboard results, schedule 
+Teacher Teacher Class list, attendance UC03, UC04 
+Dashboard recording, grade entry 
+Registrar Academic Student/teacher registration, UC05, UC06, 
+Management timetable creation, exam UC07 
+Panel scheduling 
+Administrator System Control Role management, system UC08, UC09, 
+Panel configuration, monitoring UC10 
+ 
+2.4.3 User Interface Flow Diagram 
+The User Interface Flow Diagram illustrates the logical flow of screens and interactions within 
+the system. It shows how users navigate from one interface to another while performing system 
+tasks. This model helps identify navigation paths and ensures smooth user experience. 
+ 
+Figure 2.7: Student UI Flow Diagram 
+ 
+Figure 2.8: Teacher UI Flow Diagram  
+ 
+Figure 2.9: Administrator UI Flow Diagram  
+ 
+Figure 2.10: Registrar UI Flow Diagram 
+  
+2.4.4 Supplementary Specifications 
+2.4.4.1 Business Rules 
+  
+Table 2.17: Business Rules 
+ID Description Priority Dependencies Potential Impact 
+BR1 Only registered users High None Ensures system 
+with valid credentials security and prevents 
+can access the unauthorized access to 
+system. sensitive academic 
+data. 
+BR2 Students must High BR1 Upholds academic 
+maintain a minimum standards and ensures 
+75% attendance to be compliance with 
+eligible for institutional policies. 
+examinations. 
+BR3 Teachers can only High BR1, BR4 Maintains academic 
+manage courses integrity and ensures 
+assigned by the proper oversight of 
+Registrar. course content and 
+grading. 
+BR4 All student and High BR1 Guarantees data 
+teacher registrations accuracy and controls 
+must be approved by the validity of all user 
+the Registrar. accounts in the system. 
+BR5 Timetable creation High BR4 Ensures operational 
+must avoid efficiency and optimal 
+scheduling conflicts utilization of 
+for teachers and institutional resources. 
+classrooms. 
+BR6 System High BR1 Maintains system 
+configurations can stability and prevents 
+only be modified by unauthorized changes 
+Administrators. to core settings. 
+BR7 All academic records High BR6 Protects against critical 
+must be backed up data loss and supports 
+daily. disaster recovery 
+procedures. 
+BR8 Examination results Medium BR3 Enhances the accuracy 
+must be verified by and credibility of 
+the course teacher published academic 
+before finalization. results. 
+BR9 User roles and Medium BR1, BR6 Maintains security 
+permissions must be compliance and 
+reviewed quarterly prevents privilege 
+by the Administrator. creep or outdated 
+access rights. 
+BR10 All system actions High BR1 Creates a reliable audit 
+must be logged with trail for security 
+a timestamp and user monitoring, 
+ID. troubleshooting, and 
+compliance checks. 
+  
+2.4.4.2 Constraints 
+Table 2.18: Constraints 
+ID Description Dependencies Potential Impact 
+C1 The system must operate within the None Performance 
+existing college network and IT limitations, 
+infrastructure. accessibility 
+restrictions 
+C2 The system must support a maximum C1 Scalability, response 
+of 500 concurrent users during peak time during high usage 
+academic periods. 
+C3 All student and teacher registrations All Data integrity, system 
+must be validated for accuracy before reliability 
+approval. 
+C4 The system must notify users in None User experience, 
+advance of planned maintenance to system availability 
+minimize disruptions. 
+C5 The system must provide real-time None User experience, 
+updates on attendance, grades, and system efficiency 
+schedule changes. 
+C6 All academic data must be validated All Data integrity, system 
+for accuracy and completeness before reliability 
+being processed. 
+C7 All academic records must be stored All Data security, system 
+securely and backed up daily. reliability 
+C8 The system must allow authorized None User participation, 
+users to submit and track attendance, operational efficiency 
+grades, and reports easily. 
+C9 The system must have an intuitive and None User adoption, system 
+user-friendly interface accessible to acceptance 
+users with basic computer skills. 
+C10 The system must include robust search None User satisfaction, 
+functionality for students, courses, and administrative 
+academic records. efficiency 
+  
+  
+  
+2.4.4.3 Change Cases 
+  
+Table 2.19: Change Cases 
+ID Change Description Priority Dependencies Potential Impact 
+CC1 Integration with Medium BR2, BR3, C5 Reduces manual 
+biometric attendance recording errors, 
+system for automated improves attendance 
+class attendance accuracy, saves teacher 
+tracking. time. 
+CC2 Implementation of High BR4, BR6, C9 Streamlines financial 
+online fee payment transactions, reduces 
+gateway for tuition and cash handling, 
+other academic fees. improves payment 
+tracking. 
+CC3 Development of Medium BR1, BR10, Increases accessibility, 
+dedicated mobile C8 enables real-time 
+applications for updates, improves user 
+Students and Teachers engagement. 
+with push notifications. 
+CC4 Integration with High BR3, BR8, C5 Creates unified 
+Learning Management academic platform, 
+System for assignment enhances teaching-
+submission and online learning experience, 
+course materials. supports blended 
+learning. 
+CC5 Implementation of High BR6, BR7, Enables data-driven 
+advanced analytics BR9, C10 decisions through 
+dashboard for enrollment, 
+institutional decision- performance, and 
+making. resource analytics. 
+CC6 Expansion to support Medium BR4, BR5, C2 Allows institutional 
+multiple campuses growth, supports multi-
+with centralized campus operations, 
+administration. centralizes 
+management. 
+CC7 Implementation of High BR10, C4, C5 Improves 
+automated report communication 
+generation and email efficiency, ensures 
+notification system. timely information 
+dissemination, reduces 
+manual notifications. 
+  
+ 
+ 
+ 
+2.5 System Models - Analysis 
+2.5.1 System Use Case Modeling 
+2.5.1.1 Use Case Diagram 
+The use case diagram illustrates the functional interactions between external actors (Student, Teacher, 
+Registrar, and Administrator) and the College ERP System. It identifies system boundaries and high-
+level services provided to each actor. This diagram provides a conceptual overview of system 
+functionality before detailed behavioral modeling. 
+ 
+College ERP System 
+ 
+Figure 2.11: System Use Case Diagram 
+ 
+2.5.1.2 Use Case Documentation 
+A. AUTHENTICATION USE CASES  
+Table 2.20: Use Case – Login 
+Field Description 
+Use Case Name Login 
+Use Case ID UC-01 
+Field Description 
+Actors Student, Teacher, Registrar, Admin 
+Description Allows any registered user to access the system by providing valid credentials. 
+Preconditions User must have an active account registered in the system by the appropriate authority. 
+1. User navigates to system login page. 
+2. System displays login form with username/ID and password fields. 
+3. User enters credentials. 
+Basic Flow 
+4. System validates credentials against database. 
+5. System verifies user role and permissions. 
+6. System redirects user to role-specific dashboard. 
+Invalid Credentials: If credentials don't match, system displays error: "Invalid username or password" 
+and returns to step 3. 
+Alternative 
+ 
+Flows 
+Account Locked/Inactive: If account is locked or inactive, system displays appropriate message and user 
+must contact administrator. 
+Post Conditions User is authenticated and directed to their role-specific dashboard. 
+ 
+Table 2.21: Use Case – Logout 
+Field Description 
+Use Case Name Logout 
+Use Case ID UC-02 
+Actors Student, Teacher, Registrar, Admin 
+Field Description 
+Description Securely terminates user session and returns to login screen. 
+Preconditions User must be currently logged into the system. 
+1. User clicks "Logout" button in navigation menu. 
+2. System displays confirmation dialog (optional). 
+3. User confirms logout. 
+Basic Flow 
+4. System invalidates session token. 
+5. System clears all session data. 
+6. System redirects to login page. 
+Alternative Automatic Logout: After a predefined period of inactivity (e.g., 30 minutes), system automatically logs 
+Flows out user, displays "Session expired" message, and redirects to login page. 
+Post Conditions User session is terminated and user is returned to login page. 
+ 
+B. STUDENT USE CASES 
+Table 2.22: Use Case – View Attendance 
+Field Description 
+Use Case Name View Attendance 
+Use Case ID UC-03 
+Actor Student 
+Description Allows student to view their attendance records for enrolled courses. 
+Field Description 
+1. Student is logged in. 
+Preconditions 2. Student is enrolled in at least one course. 
+3. Teacher has recorded attendance data. 
+1. Student navigates to "My Attendance" section. 
+2. System retrieves current enrollment information. 
+3. System fetches attendance records for each enrolled course. 
+Basic Flow 
+4. System calculates attendance percentage per course. 
+5. System displays attendance summary and detailed records. 
+6. Student can filter by course, date range, or academic term. 
+No Attendance Data: If no attendance recorded, system displays: "No attendance records available." 
+Alternative Flows  
+Course Not Started: If course hasn't started, system displays appropriate message. 
+Post Conditions Student views attendance information. 
+ 
+Table 2.23: Use Case – View Result 
+Field Description 
+Use Case Name View Result 
+Use Case ID UC-04 
+Actor Student 
+Description Allows student to view academic results and grades. 
+Field Description 
+1. Student is logged in. 
+Preconditions 2. Results have been published by teacher/registrar. 
+3. Student is enrolled in the course. 
+1. Student navigates to "Academic Results" section. 
+2. System retrieves published results for student. 
+Basic Flow 3. System calculates GPA and academic standing. 
+4. System displays results organized by term/course. 
+5. Student can view detailed breakdown by assessment type. 
+Results Not Published: System displays: "Results pending publication." 
+Alternative Flows  
+Restricted Access: If results are embargoed, system displays: "Results will be available on [date]." 
+Post Conditions Results viewed. 
+ 
+Table 2.24: Use Case – View Timetable 
+Field Description 
+Use Case Name View Timetable 
+Use Case ID UC-05 
+Actor Student 
+Description Allows student to view their class schedule. 
+1. Student is logged in. 
+Preconditions 2. Registrar has created and published timetable. 
+3. Student is enrolled in courses. 
+Field Description 
+1. Student navigates to "My Timetable" section. 
+2. System retrieves student's course enrollment. 
+Basic Flow 3. System fetches timetable data for enrolled courses. 
+4. System displays schedule in weekly calendar format. 
+5. Student can toggle between daily/weekly/monthly views. 
+Alternative Flows No Timetable Available: System displays: "Timetable not yet published for current term." 
+Post Conditions Timetable viewed. 
+ 
+C. TEACHER USE CASES 
+Table 2.25: Use Case – Record Attendance 
+Field Description 
+Use Case Name Record Attendance 
+Use Case ID UC-06 
+Actor Teacher 
+Description Allows teacher to mark attendance for their classes. 
+1. Teacher is logged in. 
+Preconditions 2. Teacher is assigned to active courses. 
+3. Class is scheduled for current date/time. 
+1. Teacher selects "Take Attendance" from dashboard. 
+Basic Flow 2. System displays list of today's classes. 
+3. Teacher selects specific class. 
+4. System loads enrolled student list for that class. 
+Field Description 
+5. Teacher marks attendance (Present/Absent/Late/Excused). 
+6. Teacher adds comments if needed. 
+7. System validates and saves attendance. 
+8. System confirms successful save. 
+Save as Draft: Teacher can save incomplete attendance as draft and complete later. 
+Alternative Flows  
+Bulk Marking: Teacher can mark all students with single status, then modify individual exceptions. 
+Post Conditions Attendance recorded in system. 
+ 
+Table 2.26: Use Case – Enter Result 
+Field Description 
+Use Case Name Enter Result 
+Use Case ID UC-07 
+Actor Teacher 
+Description Allows teacher to enter and submit student grades. 
+1. Teacher is logged in. 
+Preconditions 2. Teacher is assigned to course. 
+3. Assessment has been conducted. 
+1. Teacher selects "Enter Grades" from dashboard. 
+2. System displays teacher's assigned courses. 
+Basic Flow 
+3. Teacher selects course and assessment type. 
+4. System loads student list with grading form. 
+5. Teacher enters grades/marks. 
+Field Description 
+6. System validates grade format and ranges. 
+7. Teacher submits grades. 
+8. System confirms submission. 
+Grade Validation Error: If grade outside valid range, system highlights error and teacher must correct 
+Alternative before submission. 
+Flows  
+Save as Draft: Teacher can save incomplete grades as draft. 
+Post Conditions Results entered. 
+ 
+Table 2.27: Use Case – View Timetable 
+Field Description 
+Use Case Name View Timetable 
+Use Case ID UC-08 
+Actor Teacher 
+Description Allows teacher to view their teaching schedule. 
+1. Teacher is logged in. 
+Preconditions 
+2. Registrar has created and published timetable. 
+1. Teacher navigates to "My Timetable" section. 
+2. System retrieves teacher's assigned courses. 
+Basic Flow 3. System fetches timetable data. 
+4. System displays teaching schedule in weekly format. 
+5. Teacher can view by day, week, or month. 
+Field Description 
+Alternative Flows No Timetable Available: System displays: "Timetable not yet published for current term." 
+Post Conditions Timetable viewed. 
+ 
+D. REGISTRAR USE CASES 
+Table 2.28: Use Case – Register Student 
+Field Description 
+Use Case Name Register Student 
+Use Case ID UC-09 
+Actor Registrar 
+Description Allows registrar to create new student accounts. 
+1. Registrar is logged in. 
+Preconditions 
+2. Student has completed admission process. 
+1. Registrar navigates to "Student Registration" section. 
+2. System displays registration form. 
+3. Registrar enters: personal info, contact details, academic info, program. 
+4. System validates required fields. 
+Basic Flow 
+5. System checks for duplicate entries. 
+6. System generates unique Student ID. 
+7. System creates account with default password. 
+8. System sends confirmation email with credentials. 
+Alternative 
+Duplicate Detection: If duplicate found, system displays similar records; registrar can verify or proceed 
+Flows 
+with new entry. 
+Field Description 
+ 
+Bulk Registration: Registrar can upload CSV file for multiple registrations. 
+Post Conditions New student registered in system. 
+ 
+Table 2.29: Use Case – Register Teacher 
+Field Description 
+Use Case Name Register Teacher 
+Use Case ID UC-10 
+Actor Registrar 
+Description Allows registrar to create new teacher accounts. 
+1. Registrar is logged in. 
+Preconditions 
+2. Teacher has completed hiring process. 
+1. Registrar navigates to "Teacher Registration" section. 
+2. System displays teacher registration form. 
+3. Registrar enters: personal info, qualifications, subjects, department. 
+4. System validates data. 
+Basic Flow 
+5. System generates unique Teacher ID. 
+6. System creates account with default password. 
+7. System assigns default permissions. 
+8. System sends welcome email with credentials. 
+Alternative Import from HR System: System can import teacher data from external HR system; registrar reviews and 
+Flows confirms import. 
+Field Description 
+Post Conditions New teacher registered in system. 
+ 
+Table 2.30: Use Case – Manage Timetable 
+Field Description 
+Use Case Name Manage Timetable 
+Use Case ID UC-11 
+Actor Registrar 
+Description Allows registrar to create, modify, and publish academic schedules. 
+1. Registrar is logged in. 
+Preconditions 2. Courses, teachers, and rooms are registered. 
+3. Academic calendar is set. 
+1. Registrar navigates to "Timetable Management" section. 
+2. System displays current timetable (if exists). 
+3. Registrar selects academic term. 
+4. Registrar creates new timetable or modifies existing one. 
+Basic Flow 5. System provides interface for scheduling. 
+6. Registrar assigns: courses → time slots → teachers → rooms. 
+7. System performs conflict checks. 
+8. Registrar publishes timetable. 
+9. System notifies affected students and teachers. 
+Conflict Detected: System highlights conflicts (teacher double-booked, room unavailable); registrar must 
+Alternative resolve before publishing. 
+Flows  
+Clone Previous Term: Registrar can clone and modify previous term's timetable. 
+Field Description 
+Post Conditions Timetable created/updated and published. 
+ 
+E. ADMINISTRATOR USE CASES 
+Table 2.31: Use Case – Manage User Roles 
+Field Description 
+Use Case Name Manage User Roles 
+Use Case ID UC-12 
+Actor Admin 
+Description Allows administrator to configure role-based access control. 
+1. Admin is logged in. 
+Preconditions 
+2. System has at least one admin account. 
+1. Admin navigates to "Role Management" section. 
+2. System displays current roles and permissions matrix. 
+3. Admin can: 
+- Create new role 
+- Modify existing role 
+Basic Flow - Delete unused role 
+4. Admin assigns permissions to roles. 
+5. Admin assigns users to roles. 
+6. System validates no orphaned users. 
+7. Admin saves configuration. 
+8. System applies new permissions immediately. 
+Field Description 
+Role Conflict: If removing role would orphan users, system requires reassignment; admin must assign 
+Alternative new role to affected users. 
+Flows  
+Permission Inheritance: Admin can create hierarchical role structures. 
+Post Conditions User roles and permissions updated. 
+ 
+Table 2.32: Use Case – Monitor System 
+Field Description 
+Use Case Name Monitor System 
+Use Case ID UC-13 
+Actor Admin 
+Description Allows administrators to monitor system health, performance, and user activities. 
+1. Admin is logged in. 
+Preconditions 
+2. System monitoring is enabled. 
+1. Admin navigates to "System Monitoring" dashboard. 
+2. System displays: 
+- Active users 
+- Server health 
+Basic Flow - Performance metrics 
+- Error logs 
+3. Admin can view detailed logs filtered by user, action, date, severity. 
+4. Admin can generate reports for auditing. 
+5. System provides real-time alerts for critical issues. 
+Field Description 
+Alternative Performance Alert: System automatically alerts when thresholds exceeded; admin receives notification 
+Flows and can take action. 
+Post Conditions System status monitored and recorded. 
+  
+  
+2.5.2 Sequence Diagrams 
+The sequence diagram illustrates the interaction between users, the system, and the database over 
+time. It shows the order of messages exchanged during key operations such as login, attendance 
+recording, and result viewing. 
+  
+ 
+  
+Figure 2.12: Login sequence diagram 
+  
+ 
+Figure 2.13: Logout Sequence Diagram 
+ 
+ 
+Figure 2.14: Timetable Management Sequence Diagram 
+  
+ 
+Figure 2.15: Admin Role Management Sequence diagram 
+ 
+Figure 2.16: Teacher Attendance Management sequence diagram 
+ 
+Figure 2.17 Registrar Register Student sequence diagram 
+ 
+ 
+Figure 2.18: Registrar Register Teacher Sequence Diagram 
+ 
+Figure 2.19: Student View Attendance Sequence Diagram 
+ 
+2.5.3 Activity Diagrams 
+Activity diagrams model the dynamic workflow of the College ERP System by representing the 
+sequence of activities performed by each actor. These diagrams illustrate control flow, decision points, 
+parallel processes, and system responses from login to logout. They provide a high-level behavioral 
+view of how users interact with the system. 
+ 
+Figure 2.20: Student Activity Diagram 
+ 
+Figure 2.21: Teacher Activity Diagram 
+ 
+Figure 2.22: Registrar Activity Diagram 
+ 
+Figure 2.23: Administrator Activity Diagram 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+CHAPTER THREE - SYSTEM DESIGN 
+3.1 Introduction 
+ 
+This chapter presents the system design of the Web-Based College ERP System. System design 
+transforms the requirements identified in Chapter Two into structured and implementable 
+architecture. The design defines system components, data structures, user interface models, 
+deployment strategy, and network configuration. 
+The objective of this chapter is to ensure scalability, maintainability, performance efficiency, and 
+security of the proposed system. 
+3.2 Design Goal 
+The system design is guided by the following goals: 
+ Scalability: Support increasing number of users and future modules. 
+ Maintainability: Modular design for easy updates and maintenance. 
+ Security: Role-Based Access Control and encrypted authentication. 
+ Performance: Efficient database queries and optimized request handling. 
+ Usability: Simple and intuitive user interface. 
+ Reliability: Daily backups and error-handling mechanisms. 
+3.3 Design Tradeoffs 
+Several design tradeoffs were considered: 
+1. Three-Tier Architecture vs Monolithic Design 
+The three-tier architecture was selected for modularity and scalability. 
+2. PostgreSQL vs SQLite 
+PostgreSQL was preferred for production due to better concurrency handling. 
+3. Security vs Performance 
+Encryption and logging slightly impact performance but significantly improve security. 
+4. Development Speed vs System Flexibility 
+Django framework was chosen to balance rapid development and maintainability. 
+ 
+3.4 Subsystem Decomposition 
+Subsystem decomposition divides the system into manageable and independent modules to 
+simplify development, testing, and maintenance. Each subsystem is designed to address specific 
+functional requirements derived from the system use cases. 
+The Authentication Subsystem manages login, logout, session control, and access validation for 
+all users. The Student Subsystem enables students to view attendance records, academic results, 
+and timetables. The Teacher Subsystem supports recording attendance and entering student 
+grades. The Registrar Subsystem manages student and teacher registration as well as timetable 
+creation and publication. The Administration Subsystem is responsible for managing user roles, 
+permissions, and system monitoring. 
+This decomposition ensures clear responsibility boundaries and reduces coupling between 
+components. 
+3.5 Hardware/Software Mapping 
+The hardware/software mapping defines how software components are deployed on physical and 
+logical infrastructure. The system is designed to operate in a web-based environment with 
+centralized servers. 
+Table 3.1: Hardware and Software Deployment Mapping 
+Layer Component Technology 
+Client Layer User Devices Desktop, Laptop, Tablet 
+Presentation Layer Web Browser Chrome, Firefox, Edge 
+Application Layer Web Framework Django (Python) 
+Web Server HTTP Server Nginx / Apache 
+Data Layer Database Server PostgreSQL / MySQL 
+Version Control Repository GitHub 
+Development Environment IDE Visual Studio Code 
+ This mapping ensures optimal performance, centralized data access, and ease of maintenance. 
+3.6 Access Control and Security 
+Access control and security are essential due to the sensitive nature of academic data. The system 
+implements role-based access control (RBAC) to restrict system functionality based on user 
+roles. 
+ 
+Table 3.2: Access Control and Security 
+Role Permissions 
+Student View attendance, results, timetable 
+Teacher Record attendance, enter grades 
+Registrar Manage registrations, create timetable 
+Administrator Configure system, manage roles, monitor logs 
+ 
+Authentication ensures only authorized users access the system, while encryption protects 
+credentials and sensitive records. Session timeout mechanisms prevent unauthorized access due to 
+inactivity. 
+ 
+3.7 Design Phase Models  
+3.7.1 Class Modeling 
+The class model defines the static structure of the system. The User class acts as the parent class. 
+Student, Teacher, Registrar, and Administrator inherit from User. Supporting classes include 
+Course, Attendance, Result, and Timetable. 
+ 
+Figure 3.1: Class Diagram 
+3.7.2 Persistent Model 
+3.7.2.1 Mapping Class Diagram to Relation 
+ User (UserID PK, Username, Password, Email, Role) 
+ Student (StudentID PK, UserID FK, FirstName, LastName, Program, Department) 
+ Teacher (TeacherID PK, UserID FK, FirstName, LastName, Department, Qualification) 
+ Administrator (AdminID PK, UserID FK, FirstName, LastName) 
+ Registrar (RegistrarID PK, UserID FK, FirstName, LastName) 
+ Course (CourseID PK, CourseName, CreditHour, TeacherID FK) 
+ Attendance (AttendanceID PK, StudentID FK, CourseID FK, Date, Status, Comments) 
+ Result (ResultID PK, StudentID FK, CourseID FK, TeacherID FK, Grade, GPA) 
+ Timetable (TimetableID PK, CourseID FK, RegistrarID FK, Room, TimeSlot) 
+3.7.2.2 Normalization 
+The database schema is designed in compliance with Third Normal Form (3NF): 
+ First Normal Form (1NF): All attributes are atomic; no repeating groups. 
+ Second Normal Form (2NF): No partial dependencies on composite keys. 
+ Third Normal Form (3NF): No transitive dependencies between non-key attributes. 
+Normalization reduces redundancy, eliminates update anomalies, and improves data integrity. 
+3.7.3 User Interface Design 
+The user interface follows a role-based dashboard approach. Each user type accesses a 
+customized interface tailored to their responsibilities. 
+ Student Dashboard: Attendance, results, timetable overview. 
+ Teacher Dashboard: Attendance entry, grade submission. 
+ Registrar Dashboard: Registration management, timetable creation. 
+ Administrator Dashboard: Role management, system monitoring. 
+The interface design prioritizes simplicity, clarity, and responsiveness using web standards 
+(HTML, CSS, Bootstrap). Navigation flows are optimized to minimize user effort and reduce 
+cognitive load. 
+3.7.4 Deployment Diagram 
+The system follows a three-tier deployment model: 
+Client Layer: 
+Users access the system through web browsers on desktops, laptops, or tablets. 
+Web Server Layer: 
+Handles HTTP/HTTPS requests and forwards them to the application server. 
+Application Server Layer: 
+Executes business logic using the Django framework. 
+Database Server Layer: 
+Stores and manages persistent academic data using PostgreSQL/MySQL. 
+This separation ensures scalability, security isolation, and efficient load handling. 
+ 
+Figure 3.2 Deployment diagram 
+3.7.5 Network Design 
+The system operates within a secured institutional network architecture. 
+Communication between client and server is protected using HTTPS encryption. Firewall 
+configurations restrict unauthorized access to application and database servers. The database 
+server is isolated from direct public access to prevent external intrusion. 
+The network design ensures: 
+ Secure data transmission 
+ Controlled access to servers 
+ High availability during peak academic operations 
+ Centralized data management 
+ 
+Figure 3.3 Network design 
+REFERENCES 
+1. Sommerville, I. (2015). Software Engineering (10th ed.). Pearson Education. 
+2. Pressman, R. S., & Maxim, B. R. (2019). Software Engineering: A Practitioner’s 
+Approach (9th ed.). McGraw-Hill Education. 
+3. Django Software Foundation. (2023). Django Documentation. Retrieved 
+from https://docs.djangoproject.com/ 
+4. MySQL AB. (2023). MySQL 8.0 Reference Manual. Oracle Corporation. 
+5. Bass, L., Clements, P., & Kazman, R. (2012). Software Architecture in Practice (3rd ed.). 
+Addison-Wesley Professional. 
+6. Fowler, M. (2003). UML Distilled: A Brief Guide to the Standard Object Modeling 
+Language (3rd ed.). Addison-Wesley. 
+7. Al-Mashari, M., & Al-Mudimigh, A. (2003). ERP implementation: lessons from a case 
+study. Information Technology & People, 16(1), 21-33. 
+8. Kumar, V., & Bhatia, P. K. (2012). Design and implementation of a web-based college 
+management system. International Journal of Computer Applications, 50(12), 34-39. 
+9. W3C. (2023). HTML & CSS Standards. World Wide Web Consortium. Retrieved 
+from https://www.w3.org/standards/ 
+10. GitHub Guides. (2023). Understanding the GitHub flow. Retrieved 
+from https://guides.github.com/ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ACRONYMS 
+Acronym Full Meaning 
+API Application Programming Interface 
+CRUD Create, Read, Update, Delete 
+CSS Cascading Style Sheets 
+CPU CPU Business and Information Technology College 
+DB Database 
+ERP Enterprise Resource Planning 
+GIT Version Control System 
+GUI Graphical User Interface 
+HTML HyperText Markup Language 
+HTTP HyperText Transfer Protocol 
+HTTPS HyperText Transfer Protocol Secure 
+ID Identifier 
+IT Information Technology 
+OS Operating System 
+SQL Structured Query Language 
+UI User Interface 
+UML Unified Modeling Language 
+VS Visual Studio  
+ 

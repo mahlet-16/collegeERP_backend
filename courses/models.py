@@ -22,6 +22,13 @@ class Course(models.Model):
 	code = models.CharField(max_length=20, unique=True)
 	name = models.CharField(max_length=200)
 	credit_hour = models.PositiveSmallIntegerField(default=3)
+	program = models.ForeignKey(
+		Program,
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True,
+		related_name="courses",
+	)
 	teacher = models.ForeignKey(
 		User,
 		on_delete=models.SET_NULL,
