@@ -11,16 +11,19 @@ from .serializers import ExamScheduleSerializer, TimetableEntrySerializer
 
 
 class TimetableEntryViewSet(viewsets.ModelViewSet):
-	queryset = TimetableEntry.objects.select_related("course", "assigned_by", "course__teacher").all()
+	queryset = TimetableEntry.objects.select_related("course", "assigned_by", "course__teacher", "section", "classroom").all()
 	serializer_class = TimetableEntrySerializer
-	filterset_fields = ["term", "day", "room", "course", "published"]
-	search_fields = ["term", "day", "room", "course__code", "course__name", "course__teacher__username"]
-	ordering_fields = ["term", "day", "start_time", "end_time", "room", "course__code", "published"]
+	filterset_fields = ["term", "day", "room", "course", "section", "classroom", "published"]
+	search_fields = ["term", "day", "room", "course__code", "course__name", "course__teacher__username", "section__name", "classroom__name"]
+	ordering_fields = ["term", "day", "start_time", "end_time", "room", "course__code", "section__name", "published"]
 
 	def get_queryset(self):
 		queryset = super().get_queryset().order_by("day", "start_time")
 		user = self.request.user
 		if user.role == "student":
+			section_id = getattr(getattr(user, "student_profile", None), "section_id", None)
+			if section_id:
+				return queryset.filter(published=True, section_id=section_id).distinct()
 			return queryset.filter(published=True, course__enrollments__student=user).distinct()
 		if user.role == "teacher":
 			return queryset.filter(course__teacher=user, published=True)
@@ -50,6 +53,16 @@ class TimetableEntryViewSet(viewsets.ModelViewSet):
 			object_id=str(entry.pk),
 		)
 
+	def perform_destroy(self, instance):
+		AuditLog.objects.create(
+			actor=self.request.user,
+			action="timetable.deleted",
+			model_name="TimetableEntry",
+			object_id=str(instance.pk),
+			detail={"course": instance.course_id, "term": instance.term, "day": instance.day},
+		)
+		instance.delete()
+
 	@action(detail=True, methods=["post"], permission_classes=[IsAdminOrRegistrar])
 	def publish(self, request, pk=None):
 		entry = self.get_object()
@@ -61,16 +74,19 @@ class TimetableEntryViewSet(viewsets.ModelViewSet):
 
 
 class ExamScheduleViewSet(viewsets.ModelViewSet):
-	queryset = ExamSchedule.objects.select_related("course", "scheduled_by", "course__teacher").all()
+	queryset = ExamSchedule.objects.select_related("course", "scheduled_by", "course__teacher", "section", "classroom").all()
 	serializer_class = ExamScheduleSerializer
-	filterset_fields = ["term", "date", "room", "course", "published"]
-	search_fields = ["term", "room", "course__code", "course__name", "course__teacher__username", "description"]
-	ordering_fields = ["term", "date", "start_time", "end_time", "room", "course__code", "published"]
+	filterset_fields = ["term", "date", "room", "course", "section", "classroom", "published"]
+	search_fields = ["term", "room", "course__code", "course__name", "course__teacher__username", "section__name", "classroom__name", "description"]
+	ordering_fields = ["term", "date", "start_time", "end_time", "room", "course__code", "section__name", "published"]
 
 	def get_queryset(self):
 		queryset = super().get_queryset().order_by("date", "start_time")
 		user = self.request.user
 		if user.role == "student":
+			section_id = getattr(getattr(user, "student_profile", None), "section_id", None)
+			if section_id:
+				return queryset.filter(published=True, section_id=section_id).distinct()
 			return queryset.filter(published=True, course__enrollments__student=user).distinct()
 		if user.role == "teacher":
 			return queryset.filter(course__teacher=user, published=True)
@@ -99,6 +115,16 @@ class ExamScheduleViewSet(viewsets.ModelViewSet):
 			model_name="ExamSchedule",
 			object_id=str(exam.pk),
 		)
+
+	def perform_destroy(self, instance):
+		AuditLog.objects.create(
+			actor=self.request.user,
+			action="exam_schedule.deleted",
+			model_name="ExamSchedule",
+			object_id=str(instance.pk),
+			detail={"course": instance.course_id, "term": instance.term, "date": str(instance.date)},
+		)
+		instance.delete()
 
 	@action(detail=True, methods=["post"], permission_classes=[IsAdminOrRegistrar])
 	def publish(self, request, pk=None):

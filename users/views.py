@@ -21,7 +21,15 @@ from .serializers import (
 	TeacherProfileSerializer,
 )
 from .permissions import IsAdmin, IsAdminOrRegistrar
-from .models import AuditLog, Notification, StudentProfile, SystemSetting, TeacherProfile, User
+from .models import AuditLog, Notification, StudentProfile, SystemSetting, TeacherProfile, User, sync_user_role_profile
+
+
+def parse_bool(value, default=False):
+	if isinstance(value, bool):
+		return value
+	if value is None:
+		return default
+	return str(value).strip().lower() in ["true", "1", "yes", "y", "on"]
 
 
 def write_audit(actor, action, instance=None, detail=None):
@@ -75,7 +83,12 @@ class CreateUserView(APIView):
 
 		user = serializer.save()
 		write_audit(request.user, "user.created", user, {"role": user.role})
-		return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+		payload = UserSerializer(user).data
+		if getattr(serializer, "generated_username", None):
+			payload["generated_username"] = serializer.generated_username
+		if getattr(serializer, "generated_password", None):
+			payload["temporary_password"] = serializer.generated_password
+		return Response(payload, status=status.HTTP_201_CREATED)
 
 
 class UserListView(ListAPIView):
@@ -102,20 +115,25 @@ class UserManageView(RetrieveUpdateAPIView):
 
 	def update(self, request, *args, **kwargs):
 		instance = self.get_object()
+		requested_role = request.data.get("role", instance.role)
+		requested_is_active = parse_bool(request.data.get("is_active", instance.is_active), instance.is_active)
 
 		if request.user.role == User.Role.REGISTRAR:
-			if instance.role == User.Role.ADMIN:
-				return Response({"detail": "Registrar cannot modify admin accounts."}, status=status.HTTP_403_FORBIDDEN)
-			requested_role = request.data.get("role", instance.role)
-			if requested_role == User.Role.ADMIN:
-				return Response({"detail": "Registrar cannot assign admin role."}, status=status.HTTP_403_FORBIDDEN)
+			if instance.role not in [User.Role.STUDENT, User.Role.TEACHER]:
+				return Response({"detail": "Registrar can only modify student and teacher accounts."}, status=status.HTTP_403_FORBIDDEN)
+			if requested_role not in [User.Role.STUDENT, User.Role.TEACHER]:
+				return Response({"detail": "Registrar can only assign student or teacher roles."}, status=status.HTTP_403_FORBIDDEN)
 
-		if instance.role == User.Role.ADMIN:
-			is_active = request.data.get("is_active", None)
-			if is_active is not None:
-				is_active_value = str(is_active).lower() in ["false", "0", "no"]
-				if is_active_value and request.user.role != User.Role.ADMIN:
-					return Response({"detail": "Only admin can deactivate admin accounts."}, status=status.HTTP_403_FORBIDDEN)
+		if instance.role == User.Role.ADMIN and request.user.role != User.Role.ADMIN:
+			return Response({"detail": "Only admin can modify admin accounts."}, status=status.HTTP_403_FORBIDDEN)
+
+		if instance.role == User.Role.ADMIN and (requested_role != User.Role.ADMIN or requested_is_active is False):
+			other_active_admin_exists = User.objects.filter(role=User.Role.ADMIN, is_active=True).exclude(pk=instance.pk).exists()
+			if not other_active_admin_exists:
+				return Response({"detail": "At least one active admin account is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+		if instance.pk == request.user.pk and (requested_role != request.user.role or requested_is_active is False):
+			return Response({"detail": "You cannot demote or deactivate your own active session account."}, status=status.HTTP_400_BAD_REQUEST)
 
 		response = super().update(request, *args, **kwargs)
 		write_audit(request.user, "user.updated", instance, request.data)
@@ -137,6 +155,7 @@ class BulkCreateUsersView(APIView):
 		created = []
 		errors = []
 		for index, row in enumerate(reader, start=2):
+			role_val = (row.get("role", "student").strip() or "student").lower()
 			data = {
 				"username": row.get("username", "").strip(),
 				"password": row.get("password", "").strip(),
@@ -144,15 +163,86 @@ class BulkCreateUsersView(APIView):
 				"last_name": row.get("last_name", "").strip(),
 				"email": row.get("email", "").strip(),
 				"phone": row.get("phone", "").strip(),
-				"role": row.get("role", "student").strip() or "student",
+				"role": role_val,
+				"student_id": row.get("student_id", "").strip() or None,
+				"level": row.get("level", "").strip(),
+				"address": row.get("address", "").strip(),
+				"staff_id": row.get("staff_id", "").strip() or None,
+				"office": row.get("office", "").strip(),
 			}
+			
+			# 1. Resolve department by ID or name
+			dept_val = row.get("department", "").strip()
+			if dept_val:
+				try:
+					if dept_val.isdigit():
+						data["department"] = int(dept_val)
+					else:
+						from courses.models import Department
+						qs = Department.objects.filter(name__iexact=dept_val)
+						if qs.exists():
+							data["department"] = qs.first().pk
+						else:
+							data["department"] = dept_val
+				except Exception:
+					data["department"] = dept_val
+
+			# 2. Resolve program by ID or name
+			program_val = row.get("program", "").strip()
+			if program_val:
+				try:
+					if program_val.isdigit():
+						data["program"] = int(program_val)
+					else:
+						from courses.models import Program
+						qs = Program.objects.filter(name__iexact=program_val)
+						if qs.exists():
+							data["program"] = qs.first().pk
+						else:
+							data["program"] = program_val
+				except Exception:
+					data["program"] = program_val
+
+			# 3. Resolve section by ID, name, or label
+			section_val = row.get("section", "").strip()
+			if section_val:
+				try:
+					if section_val.isdigit():
+						data["section"] = int(section_val)
+					else:
+						from courses.models import Section
+						qs = Section.objects.filter(name__iexact=section_val)
+						if data.get("program") and isinstance(data["program"], int):
+							qs = qs.filter(program_id=data["program"])
+						
+						if qs.exists():
+							data["section"] = qs.first().pk
+						else:
+							# Compare against python .label property fallback
+							matched = None
+							for sec in Section.objects.all():
+								if sec.label.lower() == section_val.lower():
+									matched = sec.pk
+									break
+							if matched:
+								data["section"] = matched
+							else:
+								data["section"] = section_val
+				except Exception:
+					data["section"] = section_val
+
 			if request.user.role == User.Role.REGISTRAR and data["role"] not in [User.Role.STUDENT, User.Role.TEACHER]:
 				errors.append({"row": index, "detail": "Registrar can only create student and teacher accounts."})
 				continue
 			serializer = UserCreateSerializer(data=data)
 			if serializer.is_valid():
 				user = serializer.save()
-				created.append(UserSerializer(user).data)
+				payload = UserSerializer(user).data
+				if getattr(serializer, "generated_username", None):
+					payload["generated_username"] = serializer.generated_username
+				if getattr(serializer, "generated_password", None):
+					payload["temporary_password"] = serializer.generated_password
+				created.append(payload)
 				write_audit(request.user, "user.bulk_created", user, {"row": index})
 			else:
 				errors.append({"row": index, "detail": serializer.errors})
@@ -164,21 +254,23 @@ class MyProfileView(APIView):
 	permission_classes = [IsAuthenticated]
 
 	def get(self, request):
+		sync_user_role_profile(request.user)
 		if request.user.role == User.Role.STUDENT:
 			profile, _ = StudentProfile.objects.get_or_create(user=request.user)
-			return Response(StudentProfileSerializer(profile).data)
+			return Response(StudentProfileSerializer(profile, context={"request": request}).data)
 		if request.user.role == User.Role.TEACHER:
 			profile, _ = TeacherProfile.objects.get_or_create(user=request.user)
-			return Response(TeacherProfileSerializer(profile).data)
+			return Response(TeacherProfileSerializer(profile, context={"request": request}).data)
 		return Response(UserSerializer(request.user).data)
 
 	def patch(self, request):
+		sync_user_role_profile(request.user)
 		if request.user.role == User.Role.STUDENT:
 			profile, _ = StudentProfile.objects.get_or_create(user=request.user)
-			serializer = StudentProfileSerializer(profile, data=request.data, partial=True)
+			serializer = StudentProfileSerializer(profile, data=request.data, partial=True, context={"request": request})
 		elif request.user.role == User.Role.TEACHER:
 			profile, _ = TeacherProfile.objects.get_or_create(user=request.user)
-			serializer = TeacherProfileSerializer(profile, data=request.data, partial=True)
+			serializer = TeacherProfileSerializer(profile, data=request.data, partial=True, context={"request": request})
 		else:
 			serializer = UserManageSerializer(request.user, data=request.data, partial=True)
 		serializer.is_valid(raise_exception=True)

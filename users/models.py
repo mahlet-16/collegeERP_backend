@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class User(AbstractUser):
@@ -31,9 +33,18 @@ class StudentProfile(models.Model):
 		blank=True,
 		related_name="students",
 	)
+	section = models.ForeignKey(
+		"courses.Section",
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True,
+		related_name="students",
+	)
 	student_id = models.CharField(max_length=40, unique=True, null=True, blank=True)
 	level = models.CharField(max_length=40, blank=True)
 	address = models.CharField(max_length=255, blank=True)
+	emergency_contact = models.CharField(max_length=40, blank=True)
+	avatar_url = models.URLField(blank=True)
 
 	def __str__(self):
 		return self.student_id or self.user.username
@@ -113,3 +124,55 @@ class SystemSetting(models.Model):
 
 	def __str__(self):
 		return self.key
+
+
+def generated_profile_id(prefix, model, field_name, user_id):
+	candidate = f"{prefix}-{user_id:05d}"
+	suffix = 1
+	while model.objects.filter(**{field_name: candidate}).exists():
+		suffix += 1
+		candidate = f"{prefix}-{user_id:05d}-{suffix}"
+	return candidate
+
+
+def sync_user_role_profile(user):
+	"""Keep role-specific profiles aligned with the current user role."""
+	if user.role == User.Role.STUDENT:
+		try:
+			from courses.models import get_default_section
+			default_section = get_default_section()
+		except Exception:
+			default_section = None
+		StudentProfile.objects.get_or_create(
+			user=user,
+			defaults={
+				"student_id": generated_profile_id("STU", StudentProfile, "student_id", user.id),
+				"section": default_section,
+				"program": getattr(default_section, "program", None),
+				"level": f"Year {getattr(default_section, 'year_level', 1)}" if default_section else "",
+			},
+		)
+		TeacherProfile.objects.filter(user=user).delete()
+		return
+
+	if user.role == User.Role.TEACHER:
+		TeacherProfile.objects.get_or_create(
+			user=user,
+			defaults={"staff_id": generated_profile_id("TCH", TeacherProfile, "staff_id", user.id)},
+		)
+		StudentProfile.objects.filter(user=user).delete()
+		return
+
+	StudentProfile.objects.filter(user=user).delete()
+	TeacherProfile.objects.filter(user=user).delete()
+
+	try:
+		from courses.models import Course
+	except Exception:
+		return
+	Course.objects.filter(teacher=user).update(teacher=None)
+
+
+@receiver(post_save, sender=User)
+def ensure_role_profile(sender, instance, **kwargs):
+	sync_user_role_profile(instance)

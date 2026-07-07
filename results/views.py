@@ -10,15 +10,18 @@ from .serializers import ResultSerializer
 
 
 class ResultViewSet(viewsets.ModelViewSet):
-	queryset = Result.objects.select_related("student", "course", "entered_by").all()
+	queryset = Result.objects.select_related("student", "course", "course__section", "entered_by").all()
 	serializer_class = ResultSerializer
 	filterset_fields = ["student", "course", "term", "published", "is_draft"]
-	search_fields = ["student__username", "course__code", "course__name", "term", "grade"]
-	ordering_fields = ["term", "mark", "gpa", "grade", "published", "course__code", "student__username"]
+	search_fields = ["student__username", "course__code", "course__name", "course__section__name", "term", "grade"]
+	ordering_fields = ["term", "mark", "gpa", "grade", "published", "course__code", "course__section__name", "student__username"]
 
 	def get_queryset(self):
 		queryset = super().get_queryset().order_by("course__code")
 		user = self.request.user
+		section_id = self.request.query_params.get("section")
+		if section_id and user.role in ["admin", "registrar"]:
+			queryset = queryset.filter(course__section_id=section_id)
 		if user.role == "student":
 			return queryset.filter(student=user, published=True)
 		if user.role == "teacher":
@@ -74,6 +77,13 @@ class ResultViewSet(viewsets.ModelViewSet):
 			raise PermissionDenied("Only teacher or admin can delete results.")
 		if user.role == "teacher" and instance.course.teacher_id != user.id:
 			raise PermissionDenied("You can only delete results for your assigned courses.")
+		AuditLog.objects.create(
+			actor=user,
+			action="result.deleted",
+			model_name="Result",
+			object_id=str(instance.pk),
+			detail={"course": instance.course_id, "student": instance.student_id, "term": instance.term},
+		)
 		instance.delete()
 
 	@action(detail=True, methods=["post"])

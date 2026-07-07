@@ -18,6 +18,27 @@ class Attendance(models.Model):
 		limit_choices_to={"role": "student"},
 	)
 	course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="attendance_records")
+	section = models.ForeignKey(
+		"courses.Section",
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True,
+		related_name="attendance_records",
+	)
+	semester = models.ForeignKey(
+		"courses.Semester",
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True,
+		related_name="attendance_records",
+	)
+	academic_year = models.ForeignKey(
+		"courses.AcademicYear",
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True,
+		related_name="attendance_records",
+	)
 	date = models.DateField()
 	status = models.CharField(max_length=10, choices=Status.choices)
 	comment = models.CharField(max_length=255, blank=True)

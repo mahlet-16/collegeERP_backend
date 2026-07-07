@@ -1,6 +1,6 @@
 from django.db import models
 
-from courses.models import Course
+from courses.models import Classroom, Course, Section
 from users.models import User
 
 
@@ -19,6 +19,20 @@ class TimetableEntry(models.Model):
 	end_time = models.TimeField()
 	room = models.CharField(max_length=50)
 	course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="timetable_entries")
+	section = models.ForeignKey(
+		Section,
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True,
+		related_name="timetable_entries",
+	)
+	classroom = models.ForeignKey(
+		Classroom,
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True,
+		related_name="timetable_entries",
+	)
 	assigned_by = models.ForeignKey(
 		User,
 		on_delete=models.SET_NULL,
@@ -39,6 +53,20 @@ class ExamSchedule(models.Model):
 	end_time = models.TimeField()
 	room = models.CharField(max_length=50)
 	course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="exams")
+	section = models.ForeignKey(
+		Section,
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True,
+		related_name="exams",
+	)
+	classroom = models.ForeignKey(
+		Classroom,
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True,
+		related_name="exams",
+	)
 	description = models.CharField(max_length=120, blank=True)
 	scheduled_by = models.ForeignKey(
 		User,

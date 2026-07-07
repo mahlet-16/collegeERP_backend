@@ -12,6 +12,27 @@ class Result(models.Model):
 		limit_choices_to={"role": "student"},
 	)
 	course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="results")
+	section = models.ForeignKey(
+		"courses.Section",
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True,
+		related_name="results",
+	)
+	semester = models.ForeignKey(
+		"courses.Semester",
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True,
+		related_name="results",
+	)
+	academic_year = models.ForeignKey(
+		"courses.AcademicYear",
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True,
+		related_name="results",
+	)
 	mark = models.DecimalField(max_digits=5, decimal_places=2)
 	grade = models.CharField(max_length=5)
 	gpa = models.DecimalField(max_digits=3, decimal_places=2)

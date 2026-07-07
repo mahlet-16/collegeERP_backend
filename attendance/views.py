@@ -13,17 +13,20 @@ from .serializers import AttendanceSerializer
 
 
 class AttendanceViewSet(viewsets.ModelViewSet):
-	queryset = Attendance.objects.select_related("student", "course", "recorded_by").all()
+	queryset = Attendance.objects.select_related("student", "course", "course__section", "recorded_by").all()
 	serializer_class = AttendanceSerializer
 	filterset_fields = ["student", "course", "date", "status", "is_draft"]
-	search_fields = ["student__username", "course__code", "course__name", "status", "comment"]
-	ordering_fields = ["date", "status", "course__code", "student__username"]
+	search_fields = ["student__username", "course__code", "course__name", "course__section__name", "status", "comment"]
+	ordering_fields = ["date", "status", "course__code", "course__section__name", "student__username"]
 
 	def get_queryset(self):
 		queryset = super().get_queryset().order_by("-date")
 		user = self.request.user
+		section_id = self.request.query_params.get("section")
+		if section_id and user.role in ["admin", "registrar"]:
+			queryset = queryset.filter(course__section_id=section_id)
 		if user.role == "student":
-			return queryset.filter(student=user)
+			return queryset.filter(student=user, is_draft=False)
 		if user.role == "teacher":
 			return queryset.filter(course__teacher=user)
 		return queryset
@@ -53,6 +56,16 @@ class AttendanceViewSet(viewsets.ModelViewSet):
 			detail={"draft": attendance.is_draft},
 		)
 
+	def perform_destroy(self, instance):
+		AuditLog.objects.create(
+			actor=self.request.user,
+			action="attendance.deleted",
+			model_name="Attendance",
+			object_id=str(instance.pk),
+			detail={"course": instance.course_id, "student": instance.student_id, "date": str(instance.date)},
+		)
+		instance.delete()
+
 	@action(detail=False, methods=["post"])
 	def bulk(self, request):
 		if request.user.role != "teacher":
@@ -67,7 +80,15 @@ class AttendanceViewSet(viewsets.ModelViewSet):
 		for index, record in enumerate(records):
 			serializer = self.get_serializer(data=record)
 			if serializer.is_valid():
-				created.append(serializer.save(recorded_by=request.user))
+				attendance = serializer.save(recorded_by=request.user)
+				created.append(attendance)
+				AuditLog.objects.create(
+					actor=request.user,
+					action="attendance.bulk_created",
+					model_name="Attendance",
+					object_id=str(attendance.pk),
+					detail={"course": attendance.course_id, "student": attendance.student_id, "draft": attendance.is_draft},
+				)
 			else:
 				errors.append({"index": index, "detail": serializer.errors})
 
