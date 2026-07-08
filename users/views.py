@@ -288,8 +288,8 @@ class NotificationViewSet(viewsets.ModelViewSet):
 	def get_queryset(self):
 		user = self.request.user
 		if user.role == User.Role.ADMIN:
-			return Notification.objects.select_related("recipient").all()
-		return Notification.objects.filter(recipient=user)
+			return Notification.objects.select_related("recipient").filter(read=False)
+		return Notification.objects.filter(recipient=user, read=False)
 
 	def get_permissions(self):
 		if self.action in ["create", "destroy", "update", "partial_update"]:
@@ -305,9 +305,8 @@ class NotificationViewSet(viewsets.ModelViewSet):
 		notification = self.get_object()
 		if notification.recipient != request.user and request.user.role != User.Role.ADMIN:
 			return Response({"detail": "Not allowed."}, status=status.HTTP_403_FORBIDDEN)
-		notification.read = True
-		notification.save(update_fields=["read"])
-		return Response(NotificationSerializer(notification).data)
+		notification.delete()
+		return Response({"detail": "Notification deleted."}, status=status.HTTP_200_OK)
 
 
 class AuditLogViewSet(viewsets.ReadOnlyModelViewSet):
