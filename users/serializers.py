@@ -316,14 +316,14 @@ class StudentProfileSerializer(serializers.ModelSerializer):
         return value
 
     def validate(self, attrs):
-        section = attrs.get("section", getattr(self.instance, "section", None))
-        if section:
-            attrs["program"] = section.program
         request = self.context.get("request")
         if request and request.user.role == User.Role.STUDENT:
             protected = {"program", "section", "student_id", "level"}
             if protected.intersection(attrs.keys()):
                 raise serializers.ValidationError("Academic placement is managed by the registrar.")
+        section = attrs.get("section", getattr(self.instance, "section", None))
+        if section:
+            attrs["program"] = section.program
         return attrs
 
     def update(self, instance, validated_data):

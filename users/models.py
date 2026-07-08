@@ -176,3 +176,132 @@ def sync_user_role_profile(user):
 @receiver(post_save, sender=User)
 def ensure_role_profile(sender, instance, **kwargs):
 	sync_user_role_profile(instance)
+
+
+@receiver(post_save, sender='courses.Course')
+def notify_course_assignment(sender, instance, created, **kwargs):
+	if instance.teacher:
+		try:
+			title = "New Course Assigned"
+			message = f"You have been assigned to teach the course: {instance.name} ({instance.code})."
+			notif_exists = Notification.objects.filter(
+				recipient=instance.teacher,
+				title=title,
+				message=message
+			).exists()
+			if not notif_exists:
+				Notification.objects.create(
+					recipient=instance.teacher,
+					title=title,
+					message=message
+				)
+		except Exception:
+			pass
+
+
+@receiver(post_save, sender='courses.Enrollment')
+def notify_enrollment_creation(sender, instance, created, **kwargs):
+	if created:
+		try:
+			Notification.objects.create(
+				recipient=instance.student,
+				title="Course Enrollment",
+				message=f"You have been enrolled in the course: {instance.course.name} ({instance.course.code}) for {instance.term}."
+			)
+		except Exception:
+			pass
+
+
+@receiver(post_save, sender='results.Result')
+def notify_result_publication(sender, instance, created, **kwargs):
+	if instance.published:
+		try:
+			title = "Result Published"
+			message = f"Your result for {instance.course.name} ({instance.course.code}) has been published: Grade {instance.grade} (GPA: {instance.gpa})."
+			notif_exists = Notification.objects.filter(
+				recipient=instance.student,
+				title=title,
+				message__contains=instance.course.code
+			).exists()
+			if not notif_exists:
+				Notification.objects.create(
+					recipient=instance.student,
+					title=title,
+					message=message
+				)
+		except Exception:
+			pass
+
+
+@receiver(post_save, sender='timetable.TimetableEntry')
+def notify_timetable_entry(sender, instance, created, **kwargs):
+	if instance.published:
+		try:
+			title = "New Timetable Entry Published"
+			message = f"A class session for {instance.course.name} ({instance.course.code}) has been scheduled on {instance.day.title()}s at {instance.start_time.strftime('%H:%M')} - {instance.end_time.strftime('%H:%M')} in {instance.room}."
+			
+			if instance.course.teacher:
+				Notification.objects.get_or_create(
+					recipient=instance.course.teacher,
+					title=title,
+					message=message
+				)
+			
+			from courses.models import Enrollment
+			student_ids = Enrollment.objects.filter(course=instance.course).values_list('student_id', flat=True)
+			notifications = [
+				Notification(recipient_id=s_id, title=title, message=message)
+				for s_id in student_ids
+			]
+			if notifications:
+				Notification.objects.bulk_create(notifications)
+		except Exception:
+			pass
+
+
+@receiver(post_save, sender='attendance.Attendance')
+def notify_attendance_record(sender, instance, created, **kwargs):
+	if not instance.is_draft:
+		try:
+			title = "Attendance Recorded"
+			message = f"Your attendance for {instance.course.name} ({instance.course.code}) on {instance.date} has been recorded as: {instance.status.title()}."
+			notif_exists = Notification.objects.filter(
+				recipient=instance.student,
+				title=title,
+				message=message
+			).exists()
+			if not notif_exists:
+				Notification.objects.create(
+					recipient=instance.student,
+					title=title,
+					message=message
+				)
+		except Exception:
+			pass
+
+
+@receiver(post_save, sender='timetable.ExamSchedule')
+def notify_exam_schedule(sender, instance, created, **kwargs):
+	if instance.published:
+		try:
+			title = "Exam Scheduled"
+			message = f"An exam for {instance.course.name} ({instance.course.code}) has been scheduled on {instance.date} at {instance.start_time.strftime('%H:%M')} - {instance.end_time.strftime('%H:%M')} in {instance.room}."
+			
+			if instance.course.teacher:
+				Notification.objects.get_or_create(
+					recipient=instance.course.teacher,
+					title=title,
+					message=message
+				)
+			
+			from courses.models import Enrollment
+			student_ids = Enrollment.objects.filter(course=instance.course).values_list('student_id', flat=True)
+			notifications = [
+				Notification(recipient_id=s_id, title=title, message=message)
+				for s_id in student_ids
+			]
+			if notifications:
+				Notification.objects.bulk_create(notifications)
+		except Exception:
+			pass
+
